@@ -34,29 +34,29 @@ public interface  HelperMethods {
         js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", driver.findElement(locator));
     }
     
+    
     default void waitForPageLoad(WebDriver driver) {
     	new WebDriverWait(driver, Duration.ofSeconds(30)).until(
                 webDriver -> ((JavascriptExecutor) webDriver)
                     .executeScript("return document.readyState").equals("complete")
             );
         }
-    
 
-    // Wait for element to be visible using serenity.timeout
+    
     default WebElement waitForElementVisible(WebDriver driver, By locator) {
         int timeoutInMillis = getSerenityTimeout(); // fetch value from serenity.properties
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(timeoutInMillis));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    // Wait for element to be clickable (optional override)
+
     default WebElement waitForElementClickable(WebDriver driver, By locator) {
         int timeoutInMillis = getSerenityTimeout();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(timeoutInMillis));
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
     
- // Wait for element to be visible using serenity.timeout
+
     default void waitForTitle(WebDriver driver, String expectedTitle) {
         int timeoutInMillis = getSerenityTimeout(); // fetch value from serenity.properties
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(timeoutInMillis));

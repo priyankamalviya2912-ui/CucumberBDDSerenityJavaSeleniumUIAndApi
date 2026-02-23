@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
 import io.cucumber.java.en.Then;
 import steps.StampDutyLandingSteps;
+import pages.CalculatorPopupPage;
 import pages.MotorVehicleRegistrationPage;
 import pages.StampDutyLandingPage;
 
@@ -13,8 +14,10 @@ import pages.StampDutyLandingPage;
 
 public class StepDefinitions {
 	MotorVehicleRegistrationPage motorVehicleRegistrationPage;
-        StampDutyLandingPage stampDutyLandingPage;
-        MotorVehicleRegistrationPage calculatorPage;
+        
+	StampDutyLandingPage stampDutyLandingPage;
+       
+    CalculatorPopupPage calculatorPopupPage;
         
         @Steps
         AuthorApi authorApi;
@@ -55,6 +58,10 @@ public class StepDefinitions {
         		motorVehicleRegistrationPage.selectYesOnRegistrationRadio();
         	}
         	motorVehicleRegistrationPage.inputPurchasePriceText(purchasePrice);
+        	motorVehicleRegistrationPage.clickCalculateButton();
+        	//calculatorPopupPage.SwitchToPopup();
+        	calculatorPopupPage.VerifyMotorVehicleRegistrationPopup();
+        	calculatorPopupPage.VerifyPopupValues("$45,000.00");
         }
         
         @When("I request details for author with ID {string}")

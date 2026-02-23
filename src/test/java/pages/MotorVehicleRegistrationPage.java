@@ -13,9 +13,9 @@ public class MotorVehicleRegistrationPage extends PageObject implements HelperMe
 
 	private WebDriver driver = getDriver();
 	
-	private By registrationRadio = By.xpath("//input[@id='passenger_Y']");
+	private By registrationRadio = By.xpath("//label[contains(text(),'Yes')]");
 	private By purchasePriceText = By.id("purchasePrice");
-	private By calculateButton = By.xpath("//button[@type='submit']");
+	private By calculateButton = By.cssSelector("button[type='submit']");
 	private By pageLink = By.xpath("//a[contains(@href,'motorsimple')]");
 	
 	private String pageTitle = "Motor vehicle registration duty calculator";
@@ -29,15 +29,11 @@ public class MotorVehicleRegistrationPage extends PageObject implements HelperMe
 	}
 	
 	public void selectYesOnRegistrationRadio() {
-		
-	        JavascriptExecutor js = (JavascriptExecutor) driver;
-	        js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", driver.findElement(registrationRadio));
-	    
+		scrollIntoView(driver, registrationRadio);
 		waitForElementVisible(driver, registrationRadio);
-		
         waitForElementClickable(driver, registrationRadio);
         driver.findElement(registrationRadio).click();
-        System.out.println();
+      
 	}
 	
 	public void inputPurchasePriceText(String purchaseValue) {
@@ -48,9 +44,12 @@ public class MotorVehicleRegistrationPage extends PageObject implements HelperMe
 	}
 	
 	public void clickCalculateButton() {
+		
+		scrollIntoView(driver, calculateButton);
+		
 		waitForElementVisible(driver, calculateButton);
-        waitForElementClickable(driver, calculateButton);
-        driver.findElement(calculateButton).click();
-        System.out.println();
+       
+       driver.findElement(calculateButton).click();
+        
 	}
 }

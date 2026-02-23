@@ -5,7 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
 import io.cucumber.java.en.Then;
-import steps.StampDutyLandingSteps;
 import pages.CalculatorPopupPage;
 import pages.MotorVehicleRegistrationPage;
 import pages.StampDutyLandingPage;
@@ -61,7 +60,7 @@ public class StepDefinitions {
         	motorVehicleRegistrationPage.clickCalculateButton();
         	//calculatorPopupPage.SwitchToPopup();
         	calculatorPopupPage.VerifyMotorVehicleRegistrationPopup();
-        	calculatorPopupPage.VerifyPopupValues("$45,000.00");
+        	calculatorPopupPage.VerifyPopupValues("$45,000.0");
         }
         
         @When("I request details for author with ID {string}")

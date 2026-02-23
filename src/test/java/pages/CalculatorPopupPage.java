@@ -29,15 +29,15 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 	
 	public void VerifyPopupValues(String valueToFind) {
 		
-		try {
+		assertThat(!valueToFind.isEmpty())
+		.as("Value for popup cant be empty")
+		.isTrue();
+		
 		By popupWindowValue = By.xpath(String.format("//*[contains(@class,'TableApp')]//td[text()='%s']", valueToFind));
 		
-		waitForElementVisible(getDriver(), popupWindowValue);;
-		System.out.println();
-		}
-		catch(Exception e) {
-			System.out.println();
-		}
+		assertThat($(popupWindowValue).isCurrentlyVisible())
+        .as("The calculation result popup window should be visible having"+valueToFind)
+        .isTrue();
 		
 	}
 	

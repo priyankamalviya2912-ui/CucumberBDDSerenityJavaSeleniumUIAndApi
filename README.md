@@ -1,279 +1,534 @@
-# Getting started with Serenity and Cucumber
+![Last Commit](https://img.shields.io/github/last-commit/serenity-bdd/serenity-cucumber-starter) ![Java](https://img.shields.io/badge/Java-17-blue) ![Serenity](https://img.shields.io/badge/Serenity_BDD-5.0.4-brightgreen) ![Cucumber](https://img.shields.io/badge/Cucumber-7.33.0-green)
 
-Serenity BDD is a library that makes it easier to write high quality automated acceptance tests, with powerful reporting and living documentation features. It has strong support for both web testing with Selenium, and API testing using RestAssured.
+---
 
-Serenity strongly encourages good test automation design, and supports several design patterns, including classic Page Objects, the newer Lean Page Objects/ Action Classes approach, and the more sophisticated and flexible Screenplay pattern.
+<div align="center">
 
-The latest version of Serenity supports Cucumber 6.x.
+# 🚀 Elevate Your Test Automation: Behaviour-Driven, Living Documentation, Ready to Scale.
 
-## The starter project
-The best place to start with Serenity and Cucumber is to clone or download the starter project on Github ([https://github.com/serenity-bdd/serenity-cucumber-starter](https://github.com/serenity-bdd/serenity-cucumber-starter)). This project gives you a basic project setup, along with some sample tests and supporting classes. There are two versions to choose from. The master branch uses a more classic approach, using action classes and lightweight page objects, whereas the **[screenplay](https://github.com/serenity-bdd/serenity-cucumber-starter/tree/screenplay)** branch shows the same sample test implemented using Screenplay.
+## Serenity BDD + Cucumber + Selenium + Java: "Your One-Stop Solution for Web UI and REST API Test Automation"
 
-### The project directory structure
-The project has build scripts for both Maven and Gradle, and follows the standard directory structure used in most Serenity projects:
-```Gherkin
-src
-  + main
-  + test
-    + java                        Test runners and supporting code
-    + resources
-      + features                  Feature files
-     + search                  Feature file subdirectories 
-             search_by_keyword.feature
+</div>
+
+---
+
+Welcome to the **Serenity BDD Cucumber Framework**. This hybrid test automation framework combines the power of [Serenity BDD](https://serenity-bdd.info/), [Cucumber](https://cucumber.io/), [Selenium WebDriver](https://www.selenium.dev/), and [RestAssured](https://rest-assured.io/) to deliver a clean, readable, and maintainable solution for both UI and API testing in Java.
+
+Written in **Gherkin**, tests are human-readable and serve as living documentation that is always in sync with your actual test results. The framework is ideal for QA engineers, developers, and business analysts who want to collaborate on automated acceptance testing with minimal friction.
+
+## Key Features
+
+- **Hybrid UI & API Testing**: A single framework covers both browser automation via Selenium WebDriver and REST API validation via RestAssured — no need to maintain separate projects.
+
+- **Behaviour-Driven Development (BDD)**: Tests are written in plain English using Gherkin `.feature` files, making them accessible to non-technical stakeholders and serving as always up-to-date living documentation.
+
+- **Page Object Model**: UI tests are structured using Serenity's `PageObject` base class, providing clean separation between test logic and page interactions, making tests easier to maintain and extend.
+
+- **Shared Utility Interface**: A common `HelperMethods` interface provides reusable WebDriver utilities — explicit waits, scroll-into-view, page-load checks — shared across all page objects without duplication.
+
+- **Serenity BDD Reporting**: After each run, Serenity generates a rich single-page HTML report with full step-level detail, screenshots on failure, and a timeline view — giving you instant visibility into what passed, failed, and why.
+
+- **Parallel Execution**: JUnit Platform's parallel runner is pre-configured to execute up to 4 threads concurrently, reducing overall test suite run time significantly.
+
+- **Environment-Aware Configuration**: Base URLs and environment properties are managed centrally in `serenity.conf`, supporting seamless switching between environments without touching test code.
+
+- **Configurable Timeouts & Screenshots**: Timeout values and screenshot behaviour are driven by `serenity.properties`, keeping configuration out of your test code.
+
+## Table of Contents
+
+- [**Getting Started**](#getting-started)
+  - [Tools & Frameworks](#tools--frameworks)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [**Project Structure**](#project-structure)
+- [**Framework Design**](#framework-design)
+  - [Page Objects](#page-objects)
+  - [API Step Library](#api-step-library)
+  - [Helper Methods](#helper-methods)
+  - [Step Definitions](#step-definitions)
+- [**Writing Tests**](#writing-tests)
+  - [Writing a Feature File](#writing-a-feature-file)
+  - [Writing Step Definitions](#writing-step-definitions)
+- [**Configuration**](#configuration)
+- [**Executing Tests**](#executing-tests)
+  - [Running via Maven](#running-via-maven)
+  - [Running via IDE](#running-via-ide)
+  - [Filtering by Tags](#filtering-by-tags)
+- [**Reports**](#reports)
+- [**Best Practices**](#best-practices)
+- [**Contribution Guide**](#contribution-guide)
+
+---
+
+## Getting Started
+
+### Tools & Frameworks
+
+- **[Java 17](https://openjdk.org/projects/jdk/17/)**: The programming language powering the framework. Java 17 LTS provides modern language features and long-term support.
+- **[Serenity BDD 5.0.4](https://serenity-bdd.info/)**: The core test automation and reporting framework. Provides deep Cucumber integration, WebDriver management, RestAssured support, and living documentation generation.
+- **[Cucumber 7.33.0](https://cucumber.io/)**: BDD test runner that parses `.feature` files written in Gherkin and maps steps to Java methods.
+- **[JUnit Platform 6.0.1](https://junit.org/junit5/)**: The test execution engine that launches Cucumber via the JUnit Platform Suite.
+- **[Selenium WebDriver](https://www.selenium.dev/)**: Browser automation library used for UI testing, managed automatically by Serenity's WebDriver integration.
+- **[RestAssured](https://rest-assured.io/)**: Java DSL for REST API testing, used through Serenity's `SerenityRest` wrapper for built-in step reporting.
+- **[AssertJ 3.23.1](https://assertj.github.io/doc/)**: Fluent assertion library used in page objects for expressive and readable assertions.
+- **[Logback 1.2.10](https://logback.qos.ch/)**: Logging framework configured via `logback-test.xml` for structured console output during test execution.
+- **[Maven](https://maven.apache.org/)**: Build and dependency management tool. The `pom.xml` controls all dependencies, plugins, and report generation lifecycle.
+
+### Prerequisites
+
+Before you begin, ensure the following are installed on your machine:
+
+- **Java 17+** — [Download JDK](https://adoptium.net/)
+- **Maven 3.8+** — [Download Maven](https://maven.apache.org/download.cgi)
+- **Google Chrome** (latest stable) — Serenity manages the ChromeDriver binary automatically
+- **Git** — for cloning the repository
+
+Verify your setup:
+
+```bash
+java -version
+mvn -version
 ```
 
-Serenity 2.2.13 introduced integration with WebdriverManager to download webdriver binaries.
+### Installation
 
-## The sample scenario
-Both variations of the sample project uses the sample Cucumber scenario. In this scenario, Sergey (who likes to search for stuff) is performing a search on the internet:
+1. Clone the repository:
 
-```Gherkin
-Feature: Search by keyword
-
-  Scenario: Searching for a term
-    Given Sergey is researching things on the internet
-    When he looks up "Cucumber"
-    Then he should see information about "Cucumber"
+```bash
+git clone <repository-url>
+cd CucumberBDDSerenityJavaSeleniumUIAndApi
 ```
 
-### The Screenplay implementation
-The sample code in the master branch uses the Screenplay pattern. The Screenplay pattern describes tests in terms of actors and the tasks they perform. Tasks are represented as objects performed by an actor, rather than methods. This makes them more flexible and composable, at the cost of being a bit more wordy. Here is an example:
+2. Install dependencies:
+
+```bash
+mvn clean install -DskipTests
+```
+
+3. Run the tests to verify the setup:
+
+```bash
+mvn clean verify
+```
+
+---
+
+## Project Structure
+
+```
+CucumberBDDSerenityJavaSeleniumUIAndApi/
+├── src/
+│   └── test/
+│       ├── java/
+│       │   ├── api/
+│       │   │   └── AuthorApi.java                    # REST API step library
+│       │   ├── pages/
+│       │   │   ├── StampDutyLandingPage.java         # Landing page object
+│       │   │   ├── MotorVehicleRegistrationPage.java # Calculator form page object
+│       │   │   └── CalculatorPopupPage.java          # Result popup page object
+│       │   ├── runner/
+│       │   │   └── CucumberTestSuite.java            # JUnit Platform test runner
+│       │   ├── stepdefinitions/
+│       │   │   └── StepDefinitions.java              # Cucumber glue code (UI + API)
+│       │   └── utility/
+│       │       └── HelperMethods.java                # Shared WebDriver utility interface
+│       └── resources/
+│           ├── features/
+│           │   └── nsw/
+│           │       ├── stamp_duty_check.feature      # UI: NSW Stamp Duty Calculator
+│           │       └── Author.feature                # API: Open Library Author details
+│           ├── serenity.conf                         # Serenity & WebDriver configuration
+│           ├── logback-test.xml                      # Logging configuration
+│           └── junit-platform.properties             # Parallel execution settings
+├── pom.xml                                           # Maven build configuration
+└── serenity.properties                               # Project name & timeout settings
+```
+
+---
+
+## Framework Design
+
+### Page Objects
+
+Page objects extend Serenity's `PageObject` base class and also implement the `HelperMethods` utility interface. Each page object is responsible for locating elements on a specific page and exposing methods that represent meaningful user interactions with that page.
+
+Here is an example from `MotorVehicleRegistrationPage.java`:
+
 ```java
-    @Given("{actor} is researching things on the internet")
-    public void researchingThings(Actor actor) {
-        actor.wasAbleTo(NavigateTo.theWikipediaHomePage());
+public class MotorVehicleRegistrationPage extends PageObject implements HelperMethods {
+
+    private By registrationRadio = By.xpath("//label[contains(text(),'Yes')]");
+    private By purchasePriceText = By.id("purchasePrice");
+    private By calculateButton   = By.cssSelector("button[type='submit']");
+    private String pageTitle     = "Motor vehicle registration duty calculator";
+
+    public void verifyMotorRegistrationPageIsDisplayed() {
+        waitForTitle(getDriver(), pageTitle);
     }
 
-    @When("{actor} looks up {string}")
-    public void searchesFor(Actor actor, String term) {
-        actor.attemptsTo(
-                LookForInformation.about(term)
-        );
+    public void selectYesOnRegistrationRadio() {
+        waitForElementClickable(getDriver(), registrationRadio);
+        scrollIntoView(getDriver(), registrationRadio);
+        find(registrationRadio).click();
     }
 
-    @Then("{actor} should see information about {string}")
-    public void should_see_information_about(Actor actor, String term) {
-        actor.attemptsTo(
-                Ensure.that(WikipediaArticle.HEADING).hasText(term)
-        );
+    public void inputPurchasePriceText(String price) {
+        waitForElementVisible(getDriver(), purchasePriceText);
+        find(purchasePriceText).sendKeys(price);
     }
-```
 
-Screenplay classes emphasise reusable components and a very readable declarative style, whereas Lean Page Objects and Action Classes (that you can see further down) opt for a more imperative style.
-
-The `NavigateTo` class is responsible for opening the Wikipedia home page:
-```java
-public class NavigateTo {
-    public static Performable theWikipediaHomePage() {
-        return Task.where("{0} opens the Wikipedia home page",
-                Open.browserOn().the(WikipediaHomePage.class));
+    public void clickCalculateButton() {
+        waitForElementClickable(getDriver(), calculateButton);
+        find(calculateButton).click();
     }
 }
 ```
 
-The `LookForInformation` class does the actual search:
+In this example, `MotorVehicleRegistrationPage` encapsulates all interactions with the motor vehicle registration calculator form. Locators are kept private and page interactions are exposed as clearly named methods, keeping step definitions clean and readable.
+
+Page objects in this framework are found in the `pages` package:
+
+| Page Object | Responsibility |
+|---|---|
+| `StampDutyLandingPage` | Navigates to the landing page and clicks "Check online" |
+| `MotorVehicleRegistrationPage` | Handles radio buttons, price input, and calculate button |
+| `CalculatorPopupPage` | Validates the duty result modal popup |
+
+---
+
+### API Step Library
+
+REST API interactions are encapsulated in the `api` package. Classes extend `PageObject` and use Serenity's `SerenityRest` wrapper, so all API calls are automatically captured in the Serenity report with full request/response detail.
+
+Here is an example from `AuthorApi.java`:
+
 ```java
-public class LookForInformation {
-    public static Performable about(String searchTerm) {
-        return Task.where("{0} searches for '" + searchTerm + "'",
-                Enter.theValue(searchTerm)
-                        .into(SearchForm.SEARCH_FIELD)
-                        .thenHit(Keys.ENTER)
-        );
+public class AuthorApi extends PageObject {
+
+    private String baseUrl;
+
+    public void setBaseUrl() {
+        EnvironmentVariables vars = SystemEnvironmentVariables.createEnvironmentVariables();
+        baseUrl = vars.getProperty("restapi.baseurl", "https://openlibrary.org");
+    }
+
+    public void fetchAuthorDetails(String authorId) {
+        setBaseUrl();
+        SerenityRest.given()
+            .baseUri(baseUrl)
+            .when()
+            .get("/authors/" + authorId + ".json")
+            .then()
+            .statusCode(200);
+    }
+
+    public void verifyPersonalName(String expectedName) {
+        SerenityRest.lastResponse()
+            .then()
+            .body("personal_name", is(expectedName));
+    }
+
+    public void verifyAlternateNamesInclude(String expectedAltName) {
+        SerenityRest.lastResponse()
+            .then()
+            .body("alternate_names", hasItem(expectedAltName));
     }
 }
 ```
 
-In Screenplay, we keep track of locators in light weight page or component objects, like this one:
-```java
-class SearchForm {
-    static Target SEARCH_FIELD = Target.the("search field")
-                                       .locatedBy("#searchInput");
+The base URL is read from the environment configuration in `serenity.conf`, allowing the API endpoint to be changed per environment without modifying test code.
 
+---
+
+### Helper Methods
+
+`HelperMethods` is a Java interface with default methods providing shared WebDriver utilities across all page objects. Any page object that implements this interface gains access to the following methods:
+
+| Method | Description |
+|---|---|
+| `getSerenityTimeout()` | Reads the `webdriver.wait.for.timeout` value from Serenity properties (default: 5000ms) |
+| `scrollIntoView(driver, by)` | Uses JavaScript smooth scroll to bring an element into view before interacting |
+| `waitForPageLoad(driver)` | Waits until `document.readyState` equals `"complete"` |
+| `waitForElementVisible(driver, by)` | Explicit wait until the element is visible on screen |
+| `waitForElementClickable(driver, by)` | Explicit wait until the element is ready to receive a click |
+| `waitForTitle(driver, title)` | Waits until the browser page title matches the expected value |
+
+All waits use `WebDriverWait` with `ExpectedConditions` and respect the configurable timeout from `serenity.properties`.
+
+---
+
+### Step Definitions
+
+`StepDefinitions.java` is the single glue class mapping all Gherkin steps to page object and API actions. UI page objects are instantiated directly, while the API step library is injected via Serenity's `@Steps` annotation:
+
+```java
+@Steps
+AuthorApi authorApi;
+
+StampDutyLandingPage landingPage            = new StampDutyLandingPage();
+MotorVehicleRegistrationPage calculatorPage = new MotorVehicleRegistrationPage();
+CalculatorPopupPage popupPage               = new CalculatorPopupPage();
+```
+
+This keeps step definitions thin and focused on orchestration, with all interaction logic living in the page objects.
+
+---
+
+## Writing Tests
+
+### Writing a Feature File
+
+Feature files are written in Gherkin and located in `src/test/resources/features/nsw/`. Each scenario is tagged to allow selective execution via the test runner or Maven command line.
+
+Here is an example of the UI feature:
+
+```gherkin
+@TC_01
+Feature: Stamp Duty Calculator
+
+  As a user
+  I want to check stamp duty online
+  So that I can calculate the expected duty amount
+
+  Scenario Outline: Navigate to Stamp Duty calculator from landing page
+    Given Open the Stamp Duty landing page
+    When Click the 'Check online' button to navigate to the calculator
+    Then The calculator page should be displayed
+    And I select "<PassengerVehicle>" and "<PurchasePrice>" for Is this registration for a passenger vehicle
+    And I verify the "Passenger vehicle" is "<PassengerVehicle>"
+    And I verify the "Purchase price" is "<PurchasePrice>"
+    And I verify the "Calculated duty" is "<CalculatedDuty>"
+
+    Examples:
+      | PassengerVehicle | PurchasePrice | CalculatedDuty |
+      | Yes              | 45,000        | $1,350.00      |
+```
+
+Here is an example of the API feature:
+
+```gherkin
+@API @Task3 @TC_03
+Feature: Validate Author API
+
+  Scenario: Validate specific author details from Open Library
+    When I request details for author with ID "OL1A"
+    Then the personal name should be "Sachi Rautroy"
+    And the alternate names should include "Yugashrashta Sachi Routray"
+```
+
+### Writing Step Definitions
+
+Each Gherkin step maps to a method in `StepDefinitions.java`. Step methods delegate directly to page object methods, keeping them concise:
+
+```java
+@Given("Open the Stamp Duty landing page")
+public void openLandingPage() {
+    landingPage.open();
+}
+
+@When("Click the 'Check online' button to navigate to the calculator")
+public void clickCheckOnline() {
+    landingPage.clickCheckOnlineButton();
+}
+
+@Then("The calculator page should be displayed")
+public void verifyCalculatorPageDisplayed() {
+    calculatorPage.verifyMotorRegistrationPageIsDisplayed();
+}
+
+@When("I request details for author with ID {string}")
+public void requestAuthorDetails(String authorId) {
+    authorApi.fetchAuthorDetails(authorId);
 }
 ```
 
-The Screenplay DSL is rich and flexible, and well suited to teams working on large test automation projects with many team members, and who are reasonably comfortable with Java and design patterns. 
+---
 
-### The Action Classes implementation.
+## Configuration
 
-A more imperative-style implementation using the Action Classes pattern can be found in the `action-classes` branch. The glue code in this version looks this this:
+### `serenity.conf`
 
-```java
-    @Given("^(?:.*) is researching things on the internet")
-    public void i_am_on_the_Wikipedia_home_page() {
-        navigateTo.theHomePage();
-    }
+The main configuration file located at `src/test/resources/serenity.conf`. Controls WebDriver, browser options, screenshots, and environment-specific URLs:
 
-    @When("she/he looks up {string}")
-    public void i_search_for(String term) {
-        searchFor.term(term);
-    }
-
-    @Then("she/he should see information about {string}")
-    public void all_the_result_titles_should_contain_the_word(String term) {
-        assertThat(searchResult.displayed()).contains(term);
-    }
-```
-
-These classes are declared using the Serenity `@Steps` annotation, shown below:
-```java
-    @Steps
-    NavigateTo navigateTo;
-
-    @Steps
-    SearchFor searchFor;
-
-    @Steps
-    SearchResult searchResult;
-```
-
-The `@Steps`annotation tells Serenity to create a new instance of the class, and inject any other steps or page objects that this instance might need.
-
-Each action class models a particular facet of user behaviour: navigating to a particular page, performing a search, or retrieving the results of a search. These classes are designed to be small and self-contained, which makes them more stable and easier to maintain.
-
-The `NavigateTo` class is an example of a very simple action class. In a larger application, it might have some other methods related to high level navigation, but in our sample project, it just needs to open the DuckDuckGo home page:
-```java
-public class NavigateTo {
-
-    WikipediaHomePage homePage;
-
-    @Step("Open the Wikipedia home page")
-    public void theHomePage() {
-        homePage.open();
-    }
+```hocon
+serenity {
+  take.screenshots = FOR_FAILURES
+  accessibility.reporting = true
+  full.logging = true
 }
-```
 
-It does this using a standard Serenity Page Object. Page Objects are often very minimal, storing just the URL of the page itself:
-```java
-@DefaultUrl("https://wikipedia.org")
-public class WikipediaHomePage extends PageObject {}
-```
+headless.mode = false
+webdriver.driver = chrome
 
-The second class, `SearchFor`, is an interaction class. It needs to interact with the web page, and to enable this, we make the class extend the Serenity `UIInteractionSteps`. This gives the class full access to the powerful Serenity WebDriver API, including the `$()` method used below, which locates a web element using a `By` locator or an XPath or CSS expression:
-```java
-public class SearchFor extends UIInteractionSteps {
-
-    @Step("Search for term {0}")
-    public void term(String term) {
-        $(SearchForm.SEARCH_FIELD).clear();
-        $(SearchForm.SEARCH_FIELD).sendKeys(term, Keys.ENTER);
-    }
+chrome.capabilities {
+  browserName = "chrome"
+  acceptInsecureCerts = true
+  "goog:chromeOptions" {
+    args = ["--no-sandbox", "--window-size=1000,800", "--incognito",
+            "--disable-gpu", "--disable-dev-shm-usage"]
+  }
 }
-```
 
-The `SearchForm` class is typical of a light-weight Page Object: it is responsible uniquely for locating elements on the page, and it does this by defining locators or occasionally by resolving web elements dynamically.
-```java
-class SearchForm {
-    static By SEARCH_FIELD = By.cssSelector("#searchInput");
-}
-```
-
-The last step library class used in the step definition code is the `SearchResult` class. The job of this class is to query the web page, and retrieve a list of search results that we can use in the AssertJ assertion at the end of the test. This class also extends `UIInteractionSteps` and
-```java
-public class SearchResult extends UIInteractionSteps {
-    public String displayed() {
-        return find(WikipediaArticle.HEADING).getText();
-    }
-}
-```
-
-The `WikipediaArticle` class is a lean Page Object that locates the article titles on the results page:
-```java
-public class WikipediaArticle {
-    public static final By HEADING =  By.id("firstHeading");
-}
-```
-
-The main advantage of the approach used in this example is not in the lines of code written, although Serenity does reduce a lot of the boilerplate code that you would normally need to write in a web test. The real advantage is in the use of many small, stable classes, each of which focuses on a single job. This application of the _Single Responsibility Principle_ goes a long way to making the test code more stable, easier to understand, and easier to maintain.
-
-## Executing the tests
-To run the sample project, you can either just run the `CucumberTestSuite` test runner class, or run either `mvn verify` or `gradle test` from the command line.
-
-By default, the tests will run using Chrome. You can run them in Firefox by overriding the `driver` system property, e.g.
-```json
-$ mvn clean verify -Ddriver=firefox
-```
-Or
-```json
-$ gradle clean test -Pdriver=firefox
-```
-
-The test results will be recorded in the `target/site/serenity` directory.
-
-## Generating the reports
-Since the Serenity reports contain aggregate information about all of the tests, they are not generated after each individual test (as this would be extremenly inefficient). Rather, The Full Serenity reports are generated by the `serenity-maven-plugin`. You can trigger this by running `mvn serenity:aggregate` from the command line or from your IDE.
-
-They reports are also integrated into the Maven build process: the following code in the `pom.xml` file causes the reports to be generated automatically once all the tests have completed when you run `mvn verify`?
-
-```
-             <plugin>
-                <groupId>net.serenity-bdd.maven.plugins</groupId>
-                <artifactId>serenity-maven-plugin</artifactId>
-                <version>${serenity.maven.version}</version>
-                <configuration>
-                    <tags>${tags}</tags>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-```
-
-## Simplified WebDriver configuration and other Serenity extras
-The sample projects both use some Serenity features which make configuring the tests easier. In particular, Serenity uses the `serenity.conf` file in the `src/test/resources` directory to configure test execution options.  
-### Webdriver configuration
-The WebDriver configuration is managed entirely from this file, as illustrated below:
-```java
-webdriver {
-    driver = chrome
-}
-headless.mode = true
-
-chrome.switches="""--start-maximized;--test-type;--no-sandbox;--ignore-certificate-errors;
-                   --disable-popup-blocking;--disable-default-apps;--disable-extensions-file-access-check;
-                   --incognito;--disable-infobars,--disable-gpu"""
-
-```
-
-Serenity uses WebDriverManager to download the WebDriver binaries automatically before the tests are executed.
-
-### Environment-specific configurations
-We can also configure environment-specific properties and options, so that the tests can be run in different environments. Here, we configure three environments, __dev__, _staging_ and _prod_, with different starting URLs for each:
-```json
 environments {
   default {
-    webdriver.base.url = "https://duckduckgo.com"
-  }
-  dev {
-    webdriver.base.url = "https://duckduckgo.com/dev"
-  }
-  staging {
-    webdriver.base.url = "https://duckduckgo.com/staging"
-  }
-  prod {
-    webdriver.base.url = "https://duckduckgo.com/prod"
+    webdriver.base.url = "https://www.service.nsw.gov.au/transaction/check-motor-vehicle-stamp-duty"
+    restapi.baseurl    = "https://openlibrary.org"
   }
 }
 ```
 
-You use the `environment` system property to determine which environment to run against. For example to run the tests in the staging environment, you could run:
-```json
-$ mvn clean verify -Denvironment=staging
+### `serenity.properties`
+
+Located at the project root. Sets the project display name, global timeout, and screenshot behaviour:
+
+```properties
+serenity.project.name=Serenity and Cucumber Quick Start
+serenity.timeout=5000
+serenity.take.screenshots=FOR_FAILURES
 ```
 
-See [**this article**](https://johnfergusonsmart.com/environment-specific-configuration-in-serenity-bdd/) for more details about this feature.
 
-## Want to learn more?
-For more information about Serenity BDD, you can read the [**Serenity BDD Book**](https://serenity-bdd.github.io/theserenitybook/latest/index.html), the official online Serenity documentation source. Other sources include:
-* **[Learn Serenity BDD Online](https://expansion.serenity-dojo.com/)** with online courses from the Serenity Dojo Training Library
-* **[Byte-sized Serenity BDD](https://www.youtube.com/channel/UCav6-dPEUiLbnu-rgpy7_bw/featured)** - tips and tricks about Serenity BDD
-* For regular posts on agile test automation best practices, join the **[Agile Test Automation Secrets](https://www.linkedin.com/groups/8961597/)** groups on [LinkedIn](https://www.linkedin.com/groups/8961597/) and [Facebook](https://www.facebook.com/groups/agiletestautomation/)
-* [**Serenity BDD Blog**](https://johnfergusonsmart.com/category/serenity-bdd/) - regular articles about Serenity BDD
+
+---
+
+## Executing Tests
+
+### Running via Maven
+
+Run the full test suite:
+
+```bash
+mvn clean verify
+```
+
+Run and generate Serenity reports in a single command:
+
+```bash
+mvn clean verify serenity:aggregate
+```
+
+### Filtering by Tags
+
+Run only UI tests:
+
+```bash
+mvn clean verify -Dcucumber.filter.tags="@TC_01"
+```
+
+Run only API tests:
+
+```bash
+mvn clean verify -Dcucumber.filter.tags="@TC_03"
+```
+
+Run multiple tags:
+
+```bash
+mvn clean verify -Dcucumber.filter.tags="@TC_01 or @TC_03"
+```
+
+### Switching Environments
+
+Pass the `environment` system property to switch the base URLs defined in `serenity.conf`:
+
+```bash
+mvn clean verify -Denvironment=staging
+```
+
+### Switching Browsers
+
+Override the browser at runtime:
+
+```bash
+mvn clean verify -Ddriver=firefox
+```
+
+### Running in Headless Mode
+
+```bash
+mvn clean verify -Dheadless=true
+```
+
+### Running via IDE
+
+Run the `CucumberTestSuite` class directly from IntelliJ IDEA or Eclipse. It is pre-configured to pick up all scenarios tagged `@TC_01` from the `features/nsw` directory.
+
+To run API tests from the IDE, update the `@IncludeTags` annotation in `CucumberTestSuite.java`:
+
+```java
+@IncludeTags("TC_03")   // for API tests
+// or remove the annotation entirely to run all scenarios
+```
+
+### Parallel Execution
+
+Parallel execution is enabled by default via `junit-platform.properties` with 4 fixed threads. To adjust the thread count, update the following properties:
+
+```properties
+cucumber.execution.parallel.config.fixed.parallelism=4
+cucumber.execution.parallel.config.fixed.max-pool-size=4
+```
+
+---
+
+## Reports
+
+Serenity generates rich, interactive HTML reports after each test run.
+
+### View the report
+
+Open the following file in your browser after running `mvn clean verify`:
+
+```
+target/site/serenity/index.html
+```
+
+### Generate reports manually
+
+If you run tests without the full Maven lifecycle, generate reports separately:
+
+```bash
+mvn serenity:aggregate
+```
+
+### What the report includes
+
+- **Test outcome summary** — pass/fail counts per feature and scenario
+- **Step-level breakdown** — every Gherkin step with its result and duration
+- **Screenshots** — captured automatically on test failure
+- **Timeline view** — shows parallel thread utilisation across the test run
+- **Living documentation** — feature narratives and scenario descriptions rendered as readable documentation
+
+---
+
+## Best Practices
+
+- **Use `HelperMethods` for all waits**: Avoid `Thread.sleep()` entirely. Use `waitForElementVisible`, `waitForElementClickable`, and `waitForPageLoad` from `HelperMethods` so waits are consistent, configurable, and logged.
+
+- **Keep step definitions thin**: Step definition methods should do nothing more than call a single page object method. Business logic and element interactions belong in page objects, not in step definitions.
+
+- **One page object per page**: Each distinct page or component should have its own page object class. Do not mix locators from different pages into a single class.
+
+- **Configure base URLs in `serenity.conf`**: Never hard-code URLs in page objects or step definitions. Use the environment configuration in `serenity.conf` so that switching environments requires no code change.
+
+- **Tag scenarios meaningfully**: Use tags like `@TC_01`, `@API`, `@smoke`, `@regression` to enable targeted execution. Every scenario should have at least one tag.
+
+- **Use `SerenityRest` for all API calls**: Always use `SerenityRest` instead of raw `RestAssured` so that API requests and responses are automatically included in the Serenity report.
+
+- **Assert in page objects, not step definitions**: Assertions belong in page object methods (using AssertJ or Hamcrest), keeping step definitions free of assertion logic and making assertion behaviour reusable.
+
+- **Use Scenario Outline for data-driven tests**: When a scenario needs to run with multiple data sets, use `Scenario Outline` with an `Examples` table rather than duplicating scenarios.
+
+- **Run with `mvn clean verify`**: Always use `clean` to avoid stale test results polluting Serenity's aggregate report from a previous run.
+
+---
+
+## Contribution Guide
+
+Contributions are welcome. To contribute:
+
+1. Fork the repository and create a feature branch from `main`
+2. Follow the existing package structure and naming conventions
+3. Add or update feature files and step definitions for any new test coverage
+4. Ensure all existing tests continue to pass: `mvn clean verify`
+5. Open a pull request against the `main` branch with a clear description of the change

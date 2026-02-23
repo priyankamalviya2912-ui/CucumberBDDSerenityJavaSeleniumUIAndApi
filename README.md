@@ -54,7 +54,6 @@ Written in **Gherkin**, tests are human-readable and serve as living documentati
   - [Filtering by Tags](#filtering-by-tags)
 - [**Reports**](#reports)
 - [**Best Practices**](#best-practices)
-- [**Contribution Guide**](#contribution-guide)
 
 ---
 
@@ -494,7 +493,6 @@ mvn serenity:aggregate
 - **Test outcome summary** — pass/fail counts per feature and scenario
 - **Step-level breakdown** — every Gherkin step with its result and duration
 - **Screenshots** — captured automatically on test failure
-- **Timeline view** — shows parallel thread utilisation across the test run
 - **Living documentation** — feature narratives and scenario descriptions rendered as readable documentation
 
 ---
@@ -521,12 +519,4 @@ mvn serenity:aggregate
 
 ---
 
-## Contribution Guide
 
-Contributions are welcome. To contribute:
-
-1. Fork the repository and create a feature branch from `main`
-2. Follow the existing package structure and naming conventions
-3. Add or update feature files and step definitions for any new test coverage
-4. Ensure all existing tests continue to pass: `mvn clean verify`
-5. Open a pull request against the `main` branch with a clear description of the change

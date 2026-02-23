@@ -9,10 +9,12 @@ Feature: NSW Stamp Duty Calculator
         When Click the 'Check online' button to navigate to the calculator
         Then The calculator page should be displayed
   	  When I select "<PassengerVehicle>" and "<PurchasePrice>" for Is this registration for a passenger vehicle
-  #  Then I should see the correct calculation or validation message
+  		Then I verify the "Is this registration for a passenger vehicle?" is "<PassengerVehicle>"
+    And I verify the "Purchase price or value" is "<PurchasePrice>"
+    And I verify the "Duty payable" is "<CalculatedDuty>"
 
   Examples:
-    | PassengerVehicle | PurchasePrice |
-    | Yes              | 45000         |
+    | PassengerVehicle | PurchasePrice | CalculatedDuty |
+    | Yes              | 45,000         | $1,350.00        |
    
   

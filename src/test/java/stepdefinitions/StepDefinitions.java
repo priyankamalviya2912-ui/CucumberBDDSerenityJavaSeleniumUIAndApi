@@ -46,9 +46,15 @@ public class StepDefinitions {
         	}
         	motorVehicleRegistrationPage.inputPurchasePriceText(purchasePrice);
         	motorVehicleRegistrationPage.clickCalculateButton();
-        	//calculatorPopupPage.SwitchToPopup();
         	calculatorPopupPage.VerifyMotorVehicleRegistrationPopup();
         	calculatorPopupPage.VerifyPopupValues("$45,000.00");
+        }
+        
+        @Then("I verify the {string} is {string}")
+        public void verifyFieldAndValue(String fieldName, String expectedValue) {
+        	calculatorPopupPage.VerifyMotorVehicleRegistrationPopup();
+        	calculatorPopupPage.VerifyPopupValues(fieldName);
+        	calculatorPopupPage.VerifyPopupValues(expectedValue);
         }
         
         

@@ -15,9 +15,6 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 	private static final Logger log = LoggerFactory.getLogger(MotorVehicleRegistrationPage.class);
 	
 	private WebDriver driver = getDriver();
-
-	
-	//private By motorVehicleRegistrationPopup = By.xpath("//*[contains(@id, 'modalPopup') and normalize-space(text()) = 'Motor vehicle registration']");
 	private By motorVehicleRegistrationPopup = By.xpath("//*[contains(@class,'modal-content')]//*[normalize-space()='Motor vehicle registration']");
 	
 	
@@ -37,8 +34,8 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 		.as("Value for popup cant be empty")
 		.isTrue();
 		
-		By popupWindowValue = By.xpath(String.format("//*[contains(@class,'TableApp')]//td[text()='%s']", valueToFind));
-		log.info("verifying if the text value is found in the dialog window of calculator" +popupWindowValue);
+		By popupWindowValue = By.xpath(String.format("//*[contains(@class,'TableApp')]//td[contains(text(),'%s')]", valueToFind));
+		log.info("verifying if the text value is found in the dialog window of calculator " +popupWindowValue);
 		assertThat($(popupWindowValue).isCurrentlyVisible())
         .as("The calculation result popup window should be visible having ==>"+valueToFind)
         .isTrue();

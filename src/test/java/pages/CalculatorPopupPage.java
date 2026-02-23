@@ -4,12 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.serenitybdd.core.pages.PageObject;
 import utility.HelperMethods;
 
-public class CalculatorPopupPage extends PageObject implements HelperMethods {
 
+public class CalculatorPopupPage extends PageObject implements HelperMethods {
+	private static final Logger log = LoggerFactory.getLogger(MotorVehicleRegistrationPage.class);
+	
 	private WebDriver driver = getDriver();
 
 	
@@ -18,6 +22,7 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 	
 	
 	public void VerifyMotorVehicleRegistrationPopup() {
+		log.info("waiting for dialog window to open");
 		waitForElementVisible(getDriver(), motorVehicleRegistrationPopup);
 		
 		String popupText = driver.findElement(motorVehicleRegistrationPopup).getText();
@@ -34,9 +39,9 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 		.isTrue();
 		
 		By popupWindowValue = By.xpath(String.format("//*[contains(@class,'TableApp')]//td[text()='%s']", valueToFind));
-		
+		log.info("verifying if the text value is found in the dialog window of calculator" +popupWindowValue);
 		assertThat($(popupWindowValue).isCurrentlyVisible())
-        .as("The calculation result popup window should be visible having"+valueToFind)
+        .as("The calculation result popup window should be visible having ==>"+valueToFind)
         .isTrue();
 		
 	}

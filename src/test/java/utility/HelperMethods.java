@@ -7,10 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.RestAssuredConfig;
-import net.serenitybdd.core.Serenity;
-import net.serenitybdd.rest.SerenityRest;
+
+
 import net.thucydides.model.environment.SystemEnvironmentVariables;
 import net.thucydides.model.util.EnvironmentVariables;
 

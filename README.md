@@ -28,8 +28,6 @@ Written in **Gherkin**, tests are human-readable and serve as living documentati
 
 - **Serenity BDD Reporting**: After each run, Serenity generates a rich single-page HTML report with full step-level detail, screenshots on failure, and a timeline view — giving you instant visibility into what passed, failed, and why.
 
-- **Parallel Execution**: JUnit Platform's parallel runner is pre-configured to execute up to 4 threads concurrently, reducing overall test suite run time significantly.
-
 - **Environment-Aware Configuration**: Base URLs and environment properties are managed centrally in `serenity.conf`, supporting seamless switching between environments without touching test code.
 
 - **Configurable Timeouts & Screenshots**: Timeout values and screenshot behaviour are driven by `serenity.properties`, keeping configuration out of your test code.
@@ -95,7 +93,7 @@ mvn -version
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/priyankamalviya2912-ui/CucumberBDDSerenityJavaSeleniumUIAndApi.git
 cd CucumberBDDSerenityJavaSeleniumUIAndApi
 ```
 

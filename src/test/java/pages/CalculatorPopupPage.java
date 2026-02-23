@@ -27,9 +27,8 @@ public class CalculatorPopupPage extends PageObject implements HelperMethods {
 		
 		String popupText = driver.findElement(motorVehicleRegistrationPopup).getText();
 		assertThat("Motor vehicle registration")
-		.as("Motor Vehicle registration popup window")
 		.isEqualToIgnoringCase(popupText.trim());
-		System.out.println();
+		
 	}
 	
 	public void VerifyPopupValues(String valueToFind) {

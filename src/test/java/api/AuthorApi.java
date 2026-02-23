@@ -12,7 +12,7 @@ public class AuthorApi extends PageObject{
 	private String baseUrl;
 	
 	public void setBaseUrl() {
-	//baseUrl = environmentVariables.getProperty("restapi.baseurl");
+	
 	baseUrl = net.serenitybdd.model.environment.EnvironmentSpecificConfiguration
             .from(environmentVariables)
             .getProperty("restapi.baseurl");

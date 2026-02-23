@@ -37,19 +37,7 @@ public class StepDefinitions {
         	motorVehicleRegistrationPage.navigateToMotorVehicleRegistration();
 			motorVehicleRegistrationPage.verifyMotorRegistrationPageIsDisplayed();
         }
-        
-        @Then("All landing page elements should be accessible")
-        public void verifyLandingPageElements() {
-           // landingSteps.verifyLandingPageLoaded();
-        }
-        
-       
-
-        @Then("I should see the correct calculation or validation message")
-        public void verifyCalculationOrMessage() {
-           
-        }
-        
+    
         
         @When("I select {string} and {string} for Is this registration for a passenger vehicle")
         public void i_select_and_enter_for(String passengerVehicle, String purchasePrice) {
@@ -60,9 +48,11 @@ public class StepDefinitions {
         	motorVehicleRegistrationPage.clickCalculateButton();
         	//calculatorPopupPage.SwitchToPopup();
         	calculatorPopupPage.VerifyMotorVehicleRegistrationPopup();
-        	calculatorPopupPage.VerifyPopupValues("$45,000.0");
+        	calculatorPopupPage.VerifyPopupValues("$45,000.00");
         }
         
+        
+        //api
         @When("I request details for author with ID {string}")
         public void requestAuthorDetails(String authorId) {
         	authorApi.setBaseUrl();

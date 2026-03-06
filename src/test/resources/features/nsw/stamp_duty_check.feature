@@ -16,5 +16,7 @@ Feature: NSW Stamp Duty Calculator
   Examples:
     | PassengerVehicle | PurchasePrice | CalculatedDuty |
     | Yes              | 45,000         | $1,350.00        |
+    | Yes              | 75,000         | $1,350.00        |
+   
    
   

@@ -1,4 +1,4 @@
-package stepdefinitions;
+package ui.steps;
 
 import api.AuthorApi;
 import io.cucumber.java.en.Given;

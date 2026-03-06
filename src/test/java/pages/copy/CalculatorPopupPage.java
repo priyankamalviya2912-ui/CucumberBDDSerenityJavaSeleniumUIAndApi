@@ -1,4 +1,4 @@
-package pages;
+package pages.copy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package pages;
+package ui.pages;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

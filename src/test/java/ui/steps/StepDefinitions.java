@@ -1,9 +1,7 @@
 package ui.steps;
 
-import api.AuthorApi;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import net.serenitybdd.annotations.Steps;
 import io.cucumber.java.en.Then;
 import pages.CalculatorPopupPage;
 import pages.MotorVehicleRegistrationPage;
@@ -17,9 +15,7 @@ public class StepDefinitions {
 	StampDutyLandingPage stampDutyLandingPage;
        
     CalculatorPopupPage calculatorPopupPage;
-        
-        @Steps
-        AuthorApi authorApi;
+   
         
         @Given("Open the Stamp Duty landing page")
         public void openLandingPage() {
@@ -57,21 +53,4 @@ public class StepDefinitions {
         	calculatorPopupPage.VerifyPopupValues(expectedValue);
         }
         
-        
-        //api
-        @When("I request details for author with ID {string}")
-        public void requestAuthorDetails(String authorId) {
-        	authorApi.setBaseUrl();
-            authorApi.fetchAuthorDetails(authorId);
-        }
-
-        @Then("the personal name should be {string}")
-        public void verifyName(String name) {
-            authorApi.verifyPersonalName(name);
-        }
-
-        @Then("the alternate names should include {string}")
-        public void verifyAltName(String altName) {
-            authorApi.verifyAlternateNamesInclude(altName);
-        }
     }

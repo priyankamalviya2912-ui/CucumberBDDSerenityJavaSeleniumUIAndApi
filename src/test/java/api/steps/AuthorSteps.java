@@ -25,6 +25,7 @@ public class AuthorSteps {
 	public void validatePersonalName() {
 
 		authorApi.validatePersonalName();
+		authorApi.validatePersonalNameFromPojo();
 	}
 
 	@And("validate alternate name from json")

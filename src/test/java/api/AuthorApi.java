@@ -7,6 +7,10 @@ import io.restassured.response.Response;
 import utils.JsonReader;
 
 import static org.hamcrest.Matchers.*;
+import api.pojo.Author;
+
+
+
 
 public class AuthorApi extends PageObject {
 
@@ -43,6 +47,13 @@ public class AuthorApi extends PageObject {
         response.then()
                 .statusCode(200)
                 .body("personal_name", equalTo(expectedName));
+    }
+    
+    public void validatePersonalNameFromPojo() {
+    	Author author = response.as(Author.class);
+
+    	System.out.println("Author Name: " + author.getName());
+    	System.out.println("Birth Date: " + author.getBirth_date());
     }
 
     // THEN STEP - Validate Alternate Name

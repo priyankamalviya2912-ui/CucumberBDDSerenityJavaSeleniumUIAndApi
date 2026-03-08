@@ -16,6 +16,17 @@ public class JsonReader {
             e.printStackTrace();
         }
     }
+    
+    public static JsonNode empData() {
+    	try {
+    		 ObjectMapper mapper = new ObjectMapper();
+             data = mapper.readTree(new File("src/test/resources/payload/createEmployee.json"));
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return data;
+    }
 
     public static String getValue(String key) {
         return data.get("author").get(key).asText();

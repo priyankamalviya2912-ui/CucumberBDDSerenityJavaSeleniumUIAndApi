@@ -6,11 +6,11 @@ import net.thucydides.model.util.EnvironmentVariables;
 import io.restassured.response.Response;
 import utils.JsonReader;
 
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+
 import api.pojo.Author;
-
-
-
 
 public class AuthorApi extends PageObject {
 
@@ -51,9 +51,17 @@ public class AuthorApi extends PageObject {
     
     public void validatePersonalNameFromPojo() {
     	Author author = response.as(Author.class);
-
+    	String name = JsonReader.getValue("personalName");
+    	try {
+    	assertThat(author.getName(), equalTo(JsonReader.getValue("personalName")));
+    	
+    	}
+    	catch(Exception e) {
+    		System.out.println("error");
+    	}
     	System.out.println("Author Name: " + author.getName());
     	System.out.println("Birth Date: " + author.getBirth_date());
+    	System.out.println("Type: " + author.getType().getKey());
     }
 
     // THEN STEP - Validate Alternate Name

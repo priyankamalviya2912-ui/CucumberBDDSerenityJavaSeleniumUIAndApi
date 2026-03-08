@@ -13,7 +13,7 @@ import org.junit.platform.suite.api.*;
 
 @Suite
 @IncludeEngines("cucumber")
-@IncludeTags("TC_03")
+@IncludeTags("TC_05")
 @SelectPackages	("features.nsw")
 //@SelectClasspathResource("/features/nsw")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "net.serenitybdd.cucumber.core.plugin.SerenityReporterParallel,pretty,timeline:build/test-results/timeline")

@@ -8,4 +8,15 @@
     Then validate personal name from json 
     And validate alternate name from json
     
+  
+   @API @Task3 @TC_04
+  Scenario: Validate specific spacex
+	When user sets the API base URL and verifies info
+	
+	 @API @Task3 @TC_05
+  Scenario: Post Employee api
+	When user sets the API base URL and post emp info
+  
+    
+    
 

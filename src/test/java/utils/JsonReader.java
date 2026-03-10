@@ -3,6 +3,9 @@ package utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.util.HashMap;
+
+import io.restassured.path.json.JsonPath;
 
 public class JsonReader {
 
@@ -30,6 +33,17 @@ public class JsonReader {
 
     public static String getValue(String key) {
         return data.get("author").get(key).asText();
+    }
+    
+    public static HashMap<String, Object> getTestData(String tcId) {
+
+        File file = new File("src/test/resources/testdata/employees.json");
+
+        JsonPath json = new JsonPath(file);
+
+        HashMap<String, Object> data = json.get(tcId);
+
+        return data;
     }
     
     public static void main(String args[]) {

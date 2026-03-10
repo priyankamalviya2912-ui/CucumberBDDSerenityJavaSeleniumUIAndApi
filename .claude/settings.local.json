@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python --version && python -c \"import docx; print\\('python-docx available'\\)\" 2>&1 || echo \"python-docx not installed\")",
+      "Bash(pwsh -Command \"Get-Command python3 2>&1; Get-Command node 2>&1; Get-Command npm 2>&1\" 2>&1 | head -20)",
+      "Bash(node --version 2>&1 && npm --version 2>&1 || echo \"node/npm not found\")",
+      "Bash(cd \"D:/AutomationProject/CucumberBDDSerenityJavaSeleniumUIAndApi-main\" && npm install docx --save-dev 2>&1 | tail -5)",
+      "Bash(cd \"D:/AutomationProject/CucumberBDDSerenityJavaSeleniumUIAndApi-main\" && node generate-doc.js)",
+      "Bash(cd \"D:/AutomationProject/CucumberBDDSerenityJavaSeleniumUIAndApi-main\" && rm generate-doc.js && rm -rf node_modules package.json package-lock.json)"
+    ]
+  }
+}

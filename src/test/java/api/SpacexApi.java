@@ -4,9 +4,6 @@ import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.model.util.EnvironmentVariables;
 import io.restassured.response.Response;
-import utils.JsonReader;
-
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 

@@ -12,11 +12,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hamcrest.core.IsEqual;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import api.pojo.Employee;
+
+//post with diff ways - map and pojo in body
 public class EmployeeApi extends PageObject{
 
 	private EnvironmentVariables environmentVariables;
@@ -35,24 +43,59 @@ public class EmployeeApi extends PageObject{
     
     public void postNewEmployee() {
     	File payload = new File("src/test/resources/payload/createEmployee.json");
+    	JsonPath jsonPath = new JsonPath(payload);
+    	
+    	Map<String,String> payloadAsHmap = new HashMap<>();
+    	
+    	//if wish to take all json data then start with ""
+    	payloadAsHmap=  jsonPath.getMap("tc01");
     	
     	response = SerenityRest
                 .given()
                 .baseUri(baseUrl)
                 .contentType("application/json")
-                .body(payload)
+                .body(payloadAsHmap)
                 .when()
                 .post("/create");
+    }
+    
+    public void postNewEmployeeUsingPojo() {
+    	File payload = new File("src/test/resources/payload/createEmployee.json");
+
+    	
+    	Employee empPojo = JsonPath.from(payload)
+                .getObject("tc01", Employee.class);
+		
+
+    	// use values
+    	System.out.println(empPojo.getName());
+    	System.out.println(empPojo.getSalary());
+    	System.out.println(empPojo.getAge());
+    	
+    	response = SerenityRest
+                .given()
+                .baseUri(baseUrl)
+                .contentType("application/json")
+                .body(empPojo)
+                .when()
+                .post("/create");
+    	
+    	System.out.println(response.getBody());
+    	System.out.println();
+    	
     }
     
     public void validatePostNewEmployeeResponse() {
         
     	JsonPath jsonPath = response.jsonPath();
-    	JsonNode emp = JsonReader.empData();
+    
+    	File payload = new File("src/test/resources/payload/createEmployee.json");
+    	JsonPath jsonPathOfemp = JsonPath.from(payload);
+    	
 
-    	String name = emp.get("name").asText();;
-    	String salary = emp.get("salary").asText();
-    	String age = emp.get("age").asText();
+    	String name = jsonPathOfemp.getString("tc01.name");
+    	String salary = jsonPathOfemp.getString("tc01.salary");
+    	String age = jsonPathOfemp.getString("tc01.age");
     
     	
     	assertThat(response.getStatusCode(), equalTo(200));
